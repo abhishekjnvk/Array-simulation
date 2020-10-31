@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<head>
+    <title>Bubble-sort Algorithm</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="container form-inline">
+        <div class="form-group">
+            <label for="algoritm">Select Algoritm&nbsp;</label>
+            <select class="form-control" id="algoritm">
+                <option disabled>Select Algoritm</option>
+                <option value="1">Bubble Sort</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="size_of_array">&nbsp;Legth of array&nbsp;</label>
+            <select class="form-control" id="size_of_array">
+                <option disabled>Legth of array</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="35">35</option>
+                <option value="45" selected>45</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+            </select>
+        </div>
+
+        <input type="hidden" id="loop_break" value="0">
+        <div class="form-group mx-sm-4">
+            <label for="speed_of_algo">Algorithm Speed&nbsp;</label>
+            <select class="form-control" id="speed_of_algo">
+                <option disabled>Speed of Algoritm</option>
+                <option value="0" selected>Fast</option>
+                <option value="10">Medium</option>
+                <option value="100">Slow</option>
+                <option value="1000">Very Slow</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary" id="start_loop_button" onclick="runcode()">Simulate
+            Algorithm</button>
+        <button class="btn btn-danger" id="stop_loop_button" onclick="forceStop()" style="display: none;">Force
+            Stop</button>
+    </div>
+
+    <div id="array_div" style="display: none;">
+        <center><b>Initial Array:</b><br><span id="initial_array"></span><br></center>
+        <center><b>Sorted Array:</b><br><span id="final_array"></span></center>
+    </div>
+    <br>
+    <div id="pallet" class="row mx-5"></div>
+    <script src="algo.js"></script>
+</body>
+
+</html>
