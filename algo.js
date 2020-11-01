@@ -9,10 +9,10 @@ function forceStop() {
     $("#start_loop_button").text("Simulate Again");
 }
 
-var BubbleSortAlgo = async (array, size, delay) => {
+var BubbleSortAlgo = async (array, size, delay, width_of_bar) => {
     for (var i = 0; i < size; i++) {
         check = 0;
-        for (var j = 0; j < size - 1-i; j++) {
+        for (var j = 0; j < size - 1 - i; j++) {
             if ($("#loop_break").val() == 1) {
                 console.log("Manually Stopped")
                 break;
@@ -23,22 +23,85 @@ var BubbleSortAlgo = async (array, size, delay) => {
                 array[j + 1] = temp
                 check = 1
             }
-            makePattern(array, delay)
-            await sleep(delay);
+            if (delay != 0) {
+                makePattern(array, width_of_bar)
+                await sleep(delay);
+            }
             showArray(array, "final_array");
         }
 
-        if(check==0){
-            $("#start_loop_button").text("Simulate Again");
+        if (check == 0) {
             break;
         }
     }
+    makePattern(array, width_of_bar)
+    $("#stop_loop_button").hide();
+    $("#start_loop_button").show();
+    $("#start_loop_button").text("Simulate Again");
+    if ($("#loop_break").val() != 1) {
+        $(".sorted_bar").css("background-color", "green")
+        $(".sorted_bar").css("color", "white")
+    }
+}
+var SelectionSort = async (array, size, delay, width_of_bar) => {
+    for (var i = 0; i < size; i++) {
+        min = array[i];
+        min_index = i
+        for (var j = i; j < size; j++) {
+            if (min > array[j]) {
+                min = array[j]
+                min_index = j
+            }
+            makePattern(array, width_of_bar)
+            await sleep(delay);
+            showArray(array, "final_array");
+        }
+        array[min_index] = array[i]
+        array[i] = min
+    }
+
+    makePattern(array, width_of_bar)
+    $("#stop_loop_button").hide();
+    $("#start_loop_button").show();
+    $("#start_loop_button").text("Simulate Again");
+    $(".sorted_bar").css("background-color", "green")
+    $(".sorted_bar").css("color", "white")
 }
 
-function makePattern(new_array, delay) {
+var InsertionSort = async (array, size, delay, width_of_bar) => {
+    for (var i = 0; i < size; i++) {
+        hole = i;
+        while (i > 0 && array[hole] < array[hole - 1]) {
+            temp = array[hole]
+            array[hole] = array[hole - 1]
+            array[hole - 1] = temp
+            hole = hole - 1
+            check = 1
+            if (delay != 0) {
+                makePattern(array, width_of_bar)
+                await sleep(delay);
+            }
+            showArray(array, "final_array");
+        }
+    }
+    makePattern(array, width_of_bar)
+    $("#stop_loop_button").hide();
+    $("#start_loop_button").show();
+    $("#start_loop_button").text("Simulate Again");
+    $(".sorted_bar").css("background-color", "green")
+    $(".sorted_bar").css("color", "white")
+
+}
+
+function makePattern(new_array, width_of_bar) {
     $("#pallet").empty()
     new_array.forEach(element => {
-        $("#pallet").append(`<div style="height: ${element}px;width:35px;background-color: green;margin-bottom:3px;margin-right: 2px;margin-left: 2px;" class="text-light text-center">${element}</div>`)
+        if (width_of_bar > 20) {
+            text = element
+        } else {
+            text = ""
+        }
+        $("#pallet").append(`<div style="height: ${element}px;width:${width_of_bar}px;background-color: yellow;margin-bottom:3px;margin-right: 2px;margin-left: 2px;color:black" class="sorted_bar text-center">${text}</div>`);
     });
 }
 
@@ -52,18 +115,38 @@ function showArray(arr, div_name) {
 }
 
 function runcode() {
+    $("#pallet").empty()
+
     $("#stop_loop_button").show();
     $("#start_loop_button").hide();
     $("#loop_break").val("0");
+    $("#array_div").show()
+    $("#initial_array").text("Genrating Array");
+
     var size = $("#size_of_array").val();
     for (var random_array = [], i = 0; i < size; ++i) {
         random_array[i] = Math.floor(Math.random() * 200) + 50
     };
     delay = $("#speed_of_algo").val();
+    fixed_array = [500, 400, 300, 200, 600]
     showArray(random_array, "initial_array")
-    $("#array_div").show()
-    algo=$("#algoritm").val();
-    if(algo==1){
-        BubbleSortAlgo(random_array, size, delay)
+    algo = $("#algoritm").val();
+    width_of_bar = $(window).width() * .7 / size
+    if (width_of_bar > 50) {
+        width_of_bar = 50;
+    }
+    if (width_of_bar < 10) {
+        width_of_bar = 5;
+    }
+
+    pallet_width = size * width_of_bar + 4 * size + 40
+    $("#pallet").css('width', `${pallet_width}px`)
+
+    if (algo == 1) {
+        BubbleSortAlgo(random_array, size, delay, width_of_bar)
+    } if (algo == 2) {
+        InsertionSort(random_array, size, delay, width_of_bar)
+    } if (algo == 3) {
+        SelectionSort(random_array, size, delay, width_of_bar)
     }
 }
